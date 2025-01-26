@@ -1,0 +1,25 @@
+_BASE_: ../maskformer2_R50_bs16_90k.yaml
+OUTPUT_DIR: "/home/gianluca/PycharmProjects/benchmark_loss/Mask2Former/output/base-swin-tiny-MLP_2dec/" #Change Path
+SOLVER:
+  MAX_ITER: 90000
+  CHECKPOINT_PERIOD: 45000 ## Added Here
+  IMS_PER_BATCH: 8
+INPUT:
+  CROP:
+    SIZE: (340, 680)
+MODEL:
+  BACKBONE:
+    NAME: "D2SwinTransformer"
+  SWIN:
+    EMBED_DIM: 96
+    DEPTHS: [2, 2, 6, 2]
+    NUM_HEADS: [3, 6, 12, 24]
+    WINDOW_SIZE: 7
+    APE: False
+    DROP_PATH_RATE: 0.3
+    PATCH_NORM: True
+  WEIGHTS: "/home/gianluca/PycharmProjects/benchmark_loss/Mask2Former/output/model_final.pth"
+  MASK_FORMER:
+    DEC_LAYERS: 2  # 9 decoder layers, add one for the loss on learnable query
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
